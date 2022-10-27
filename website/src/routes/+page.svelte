@@ -1,9 +1,20 @@
+<script>
+	import { browser } from "$app/environment";
+	import ArrowIcon from "./ArrowIcon.svelte";
+
+  export let login = "";
+
+  if (browser) {
+    login = window.sessionStorage.getItem("login") ?? "";
+  }
+</script>
+
 <div class="hero min-h-screen bg-base-200">
   <div class="hero-content text-center">
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">Naortic</h1>
       <p class="py-6">Multi-language, multi-platform, secure and reliable chat application for the next generation</p>
-      <a href="/app" class="btn btn-primary">Sign up</a>
+        <a href="/login" class="btn btn-primary">{login ? "App" : "Sign up"}<svelte:component this={ArrowIcon} /></a>
     </div>
   </div>
 </div>
