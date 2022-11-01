@@ -12,9 +12,11 @@
 				`/login/github?code=${code}`
 		).then((res) =>
 			res.text().then((token) => {
-				token =
-					new URLSearchParams(token).get('access_token') ??
-					"''";
+				if (new URLSearchParams(token).has('access_token')) {
+					token = new URLSearchParams(token).get('access_token')!;
+				} else {
+					return;
+				}
 				document.cookie = `token=${token} ;path=/ ;max-age=2592000 ;Secure`;
 				window.sessionStorage.setItem(
 					'usr',

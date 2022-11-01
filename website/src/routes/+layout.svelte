@@ -1,23 +1,23 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import { browser } from '$app/environment';
 	import cookie from 'cookie';
 	import GitHubIcon from './GitHubIcon.svelte';
 	import { User } from '$lib/User';
 
-	export let isSignedIn = false;
+	export let siggnedIn = false;
 	export let name = '';
 
 	if (browser) {
 		let usr = window.sessionStorage.getItem('usr')
 			? User.from(
-					window.sessionStorage.getItem('usr') ?? ''
+					window.sessionStorage.getItem('usr')!
 			  )
 			: new User({
 					token: cookie.parse(document.cookie).token
 			  });
 
-		if (typeof usr.data.token != 'undefined') {
+		if (siggnedIn = typeof usr.data.token != 'undefined') {
 			fetch(
 				import.meta.env.VITE_API_URL +
 					`/user/name?token=${usr.data.token}`
@@ -44,10 +44,10 @@
 		<a href="https://github.com/Naortic/Naortic"
 			><svelte:component this={GitHubIcon} /></a
 		>
-		{#if isSignedIn}<div class="ml-2 btn btn-disabled">
+		{#if siggnedIn}<div class="ml-2 btn btn-disabled">
 				{name}
 			</div>{/if}
-		{#if !isSignedIn}<a href="/login" class="ml-2 btn"
+		{#if !siggnedIn}<a href="/login" class="ml-2 btn"
 				>Login</a
 			>{/if}
 	</div>
