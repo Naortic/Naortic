@@ -1,19 +1,28 @@
 <script lang="ts">
-    import { browser } from "$app/environment";
+	import { browser } from '$app/environment';
+	import { User } from '$lib/User';
 
-    if (browser) {
-        const code = new URLSearchParams(window.location.href.split("?")[1]).get('code')
+	if (browser) {
+		const code = new URLSearchParams(
+			window.location.href.split('?')[1]
+		).get('code');
 
-        fetch(import.meta.env.VITE_API_URL + `/login/github?code=${code}`)
-        .then(res => res.text()
-            .then(token => {
-                token = new URLSearchParams(token).get("access_token") ?? "";
-                document.cookie = `token=${token};`;
-                window.sessionStorage.setItem('token', token);
-        }));
-    }
+		fetch(
+			import.meta.env.VITE_API_URL +
+				`/login/github?code=${code}`
+		).then((res) =>
+			res.text().then((token) => {
+				token =
+					new URLSearchParams(token).get('access_token') ??
+					"''";
+				document.cookie = `token=${token} ;path=/ ;max-age=2592000 ;Secure`;
+				window.sessionStorage.setItem(
+					'usr',
+					new User({ token }).toString()
+				);
+			})
+		);
+	}
 </script>
 
-<div>
-    Logging in...
-</div>
+<div>Logging in...</div>
