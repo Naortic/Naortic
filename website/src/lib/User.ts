@@ -6,8 +6,8 @@ export interface UserOptions {
 export class User {
 	constructor(public data: UserOptions) {}
 
-	public static from(data: string): this {
-		return new User(JSON.parse(data));
+	public static from(data: string): User {
+		return new User(JSON.parse(data).data);
 	}
 
 	public toString(): string {

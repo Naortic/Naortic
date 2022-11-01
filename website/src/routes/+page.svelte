@@ -1,11 +1,19 @@
-<script>
+<script lang="ts">
 	import { browser } from '$app/environment';
 	import ArrowIcon from './ArrowIcon.svelte';
+	import cookie from 'cookie';
+	import { User } from '$lib/User';
 
-	export let name = '';
+	export let signedIn = false;
 
 	if (browser) {
-		name = window.sessionStorage.getItem('name') ?? '';
+		let usr = window.sessionStorage.getItem('usr')
+			? User.from(window.sessionStorage.getItem('usr')!)
+			: new User({
+					token: cookie.parse(document.cookie).token
+			  });
+		
+		signedIn = typeof usr.data.token != 'undefined';
 	}
 </script>
 
@@ -17,8 +25,8 @@
 				Multi-language, multi-platform, secure and reliable
 				chat application for the next generation
 			</p>
-			<a href="/login" class="btn btn-primary"
-				>{name ? 'App' : 'Sign up'}<svelte:component
+			<a href={signedIn ? '/app' : '/login'} class="btn btn-primary"
+				>{signedIn ? 'App' : 'Sign up'}<svelte:component
 					this={ArrowIcon}
 				/></a
 			>

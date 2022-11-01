@@ -5,25 +5,25 @@
 	import GitHubIcon from './GitHubIcon.svelte';
 	import { User } from '$lib/User';
 
-	export let siggnedIn = false;
+	export let signedIn = false;
 	export let name = '';
 
 	if (browser) {
 		let usr = window.sessionStorage.getItem('usr')
-			? User.from(
-					window.sessionStorage.getItem('usr')!
-			  )
+			? User.from(window.sessionStorage.getItem('usr')!)
 			: new User({
 					token: cookie.parse(document.cookie).token
 			  });
 
-		if (siggnedIn = typeof usr.data.token != 'undefined') {
+		signedIn = typeof usr.data.token != 'undefined';
+
+		if (signedIn) {
 			fetch(
 				import.meta.env.VITE_API_URL +
 					`/user/name?token=${usr.data.token}`
 			).then((res) =>
 				res.text().then((text) => {
-					usr.data.name = text.replaceAll('"', '');
+					usr.data.name = name = text.replaceAll('"', '');
 					window.sessionStorage.setItem(
 						'usr',
 						usr.toString()
@@ -44,10 +44,10 @@
 		<a href="https://github.com/Naortic/Naortic"
 			><svelte:component this={GitHubIcon} /></a
 		>
-		{#if siggnedIn}<div class="ml-2 btn btn-disabled">
+		{#if signedIn}<div class="ml-2 btn btn-disabled">
 				{name}
 			</div>{/if}
-		{#if !siggnedIn}<a href="/login" class="ml-2 btn"
+		{#if !signedIn}<a href="/login" class="ml-2 btn"
 				>Login</a
 			>{/if}
 	</div>
