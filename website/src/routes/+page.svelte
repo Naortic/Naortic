@@ -12,7 +12,7 @@
 			: new User({
 					token: cookie.parse(document.cookie).token
 			  });
-		
+
 		signedIn = typeof usr.data.token != 'undefined';
 	}
 </script>
@@ -25,7 +25,9 @@
 				Multi-language, multi-platform, secure and reliable
 				chat application for the next generation
 			</p>
-			<a href={signedIn ? '/app' : '/login'} class="btn btn-primary"
+			<a
+				href={signedIn ? '/app' : '/login'}
+				class="btn btn-primary"
 				>{signedIn ? 'App' : 'Sign up'}<svelte:component
 					this={ArrowIcon}
 				/></a

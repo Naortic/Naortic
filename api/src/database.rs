@@ -1,3 +1,4 @@
+use diesel::result::Error;
 use crate::models::*;
 use base64ct::{Base64, Encoding};
 use diesel::mysql::MysqlConnection;
@@ -61,6 +62,20 @@ pub fn get(usr: &str) -> Account {
         .load::<Account>(connection)
         .expect("Error loading account")[0]
         .clone()
+}
+
+pub fn find(usr_email: &str, usr_password: &str) -> (bool, Result<Vec<Account>, Error>) {
+    use crate::schema::accounts::dsl::*;
+
+    let connection = &mut connect();
+
+    let account = accounts
+        .filter(email.eq(usr_email))
+        .filter(password.eq(usr_password))
+        .limit(1)
+        .load::<Account>(connection);
+
+    (account.is_ok(), account)
 }
 
 pub fn delete(target: String) {
