@@ -1,8 +1,7 @@
 <script lang="ts">
-	import '../app.css';
+	import '../../app.css';
 	import { browser } from '$app/environment';
 	import cookie from 'cookie';
-	import GitHubIcon from './GitHubIcon.svelte';
 	import { User } from '$lib/User';
 
 	export let signedIn = false;
@@ -33,24 +32,5 @@
 		}
 	}
 </script>
-
-<div class="navbar bg-base-100">
-	<div class="navbar-start">
-		<a href="/" class="btn btn-ghost normal-case text-xl"
-			>Naortic</a
-		>
-	</div>
-	<div class="navbar-end">
-		<a href="https://github.com/Naortic/Naortic"
-			><svelte:component this={GitHubIcon} /></a
-		>
-		{#if signedIn}<div class="ml-2 btn btn-disabled">
-				{name}
-			</div>{/if}
-		{#if !signedIn}<a href="/login" class="ml-2 btn"
-				>Login</a
-			>{/if}
-	</div>
-</div>
 
 <slot />
