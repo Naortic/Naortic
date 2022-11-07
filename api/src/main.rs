@@ -1,7 +1,9 @@
-pub mod util;
+pub mod database;
+pub mod models;
 pub mod routes;
+pub mod schema;
 
-use routes::{github::github, index::index, user::username};
+use routes::{index::index, login::email::email, user::name::name};
 
 #[macro_use]
 extern crate rocket;
@@ -26,7 +28,7 @@ fn rocket() -> _ {
 
     rocket::build()
         .mount("/", routes![index])
-        .mount("/login", routes![github])
-        .mount("/user", routes![username])
+        .mount("/login", routes![email])
+        .mount("/user", routes![name])
         .attach(cors.to_cors().unwrap())
 }
