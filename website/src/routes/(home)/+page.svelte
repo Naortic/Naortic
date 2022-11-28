@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import ArrowIcon from './ArrowIcon.svelte';
+	import ArrowIcon from '../ArrowIcon.svelte';
 	import cookie from 'cookie';
 	import { User } from '$lib/User';
 
@@ -26,7 +26,7 @@
 				chat application for the next generation
 			</p>
 			<a
-				href={signedIn ? '/app' : '/login'}
+				href={signedIn ? '/app' : '/signup'}
 				class="btn btn-primary"
 				>{signedIn ? 'App' : 'Sign up'}<svelte:component
 					this={ArrowIcon}

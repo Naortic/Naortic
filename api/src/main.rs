@@ -1,9 +1,16 @@
 pub mod database;
-pub mod models;
 pub mod routes;
-pub mod schema;
+pub mod account;
 
-use routes::{index::index, login::email::email, user::name::name};
+use routes::{
+    index::index,
+    login::email::email,
+    user::{
+        friends::{add::friends_add, remove::friends_remove, friends},
+        name::name,
+        index as user_index,
+    },
+};
 
 #[macro_use]
 extern crate rocket;
@@ -29,6 +36,6 @@ fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
         .mount("/login", routes![email])
-        .mount("/user", routes![name])
+        .mount("/user", routes![user_index, friends, friends_add, friends_remove, name])
         .attach(cors.to_cors().unwrap())
 }

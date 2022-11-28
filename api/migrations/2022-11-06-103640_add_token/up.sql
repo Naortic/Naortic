@@ -1,2 +1,0 @@
-ALTER TABLE accounts ADD password VARCHAR(255) NOT NULL;
-ALTER TABLE accounts ADD token VARCHAR(255) NOT NULL;

@@ -1,6 +1,9 @@
 export interface UserOptions {
 	name?: string;
+	password?: string;
 	token?: string;
+	email?: string;
+	friends?: string[];
 }
 
 export class User {

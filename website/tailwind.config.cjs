@@ -7,6 +7,15 @@ module.exports = {
 	plugins: [require('daisyui')],
 
 	daisyui: {
-		themes: ['luxury']
+		themes: [
+			{
+				luxury: {
+					...require('daisyui/src/colors/themes')[
+						'[data-theme=luxury]'
+					],
+					'base-300': '#0f0f11'
+				}
+			}
+		]
 	}
 };

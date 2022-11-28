@@ -1,15 +1,12 @@
-use crate::database::{create, connect, find};
+use crate::database::find_account;
+#[get("/email?<email>&<password>")]
+pub async fn email(email: &str, password: &str) -> String {
+    let account = find_account(email, password).await;
 
-#[get("/email?<email>&<name>&<password>")]
-pub async fn email(email: &str, name: &str, password: &str) -> String {
-
-    let (exists, account) = find(email, password);
-
-    if exists {
-        return account.unwrap()[0].clone().token;
+    if account.is_err() {
+        String::from("account not found")
+    } else {
+        let account = account.unwrap();
+        account[0].get(0)
     }
-
-    let account = create(&mut connect(), name, password, email);
-
-    account.token
 }

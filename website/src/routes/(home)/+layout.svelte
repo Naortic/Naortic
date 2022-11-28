@@ -2,7 +2,7 @@
 	import '../../app.css';
 	import { browser } from '$app/environment';
 	import cookie from 'cookie';
-	import GitHubIcon from './GitHubIcon.svelte';
+	import GitHubIcon from '../GitHubIcon.svelte';
 	import { User } from '$lib/User';
 
 	export let signedIn = false;
@@ -20,10 +20,14 @@
 		if (signedIn) {
 			fetch(
 				import.meta.env.VITE_API_URL +
-					`/user/name?token=${usr.data.token}`
+					`/user?token=${usr.data.token}`
 			).then((res) =>
-				res.text().then((text) => {
-					usr.data.name = name = text.replaceAll('"', '');
+				res.json().then((json) => {
+					usr.data = json;
+					usr.data.name = name = json.name.replaceAll(
+						'"',
+						''
+					);
 					window.sessionStorage.setItem(
 						'usr',
 						usr.toString()
