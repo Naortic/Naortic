@@ -41,28 +41,19 @@
 	}
 
 	function addFriend() {
-		let friendname = (
-			document.getElementById(
-				'friendInput'
-			) as HTMLInputElement
-		).value;
+		let friendInput = document.getElementById(
+			'friendInput'
+		) as HTMLInputElement;
+		let friendname = friendInput.value;
 
 		let usr = User.from(
 			window.sessionStorage.getItem('usr')!
 		);
 
 		if (usr.data.friends?.includes(friendname)) {
-			(
-				document.getElementById(
-					'friendInput'
-				) as HTMLInputElement
-			).value = 'Friend already added!';
+			friendInput.value = 'Friend already added!';
 			setTimeout(() => {
-				(
-					document.getElementById(
-						'friendInput'
-					) as HTMLInputElement
-				).value = '';
+				friendInput.value = '';
 			}, 3000);
 
 			return;
@@ -76,41 +67,13 @@
 			res.text().then((text) => {
 				usr.data.friends?.push(text);
 				friends.push(text);
+				friends = friends;
 				window.sessionStorage.setItem(
 					'usr',
 					usr.toString()
 				);
 				icon = TickIcon;
-				setTimeout(() => {
-					icon = ArrowIcon;
-				}, 2000);
-			})
-		);
-	}
-
-	function removeFriend(friend: string) {
-		let usr = User.from(
-			window.sessionStorage.getItem('usr')!
-		);
-
-		icon = LoadingIcon;
-
-		fetch(
-			import.meta.env.VITE_API_URL +
-				`/user/friends/remove?token=${usr.data.token}&friend=${friend}`
-		).then((res) =>
-			res.text().then((text) => {
-				usr.data.friends = usr.data.friends?.filter(
-					(friend) => friend !== text
-				);
-				friends = friends.filter(
-					(friend) => friend !== text
-				);
-				window.sessionStorage.setItem(
-					'usr',
-					usr.toString()
-				);
-				icon = TickIcon;
+				friendInput.value = '';
 				setTimeout(() => {
 					icon = ArrowIcon;
 				}, 2000);
@@ -122,7 +85,7 @@
 <div class="bg-base-200 min-h-screen flex flex-row">
 	<!-- FRIENDS BAR -->
 	<div
-		class="m-2 toast toast-top toast-start bg-base-300 rounded h-full max-h-full border-b-2"
+		class="m-2 p-4 bg-base-300 rounded h-full max-h-full border-b-2"
 	>
 		<div class="flex">
 			<input
@@ -131,28 +94,31 @@
 				placeholder="Add new friends"
 				class="input my-1 bg-base-100 w-full max-w-xs"
 			/>
-			<button on:click={addFriend} class="btn mt-1 ml-1"
+			<button
+				on:click={addFriend}
+				class="btn mt-1 ml-2 text-white"
 				><svelte:component this={icon} /></button
 			>
 		</div>
 		{#each friends as friend}
-			<div class="alert">
-				<a href="/app/dm/{friend}"
-					><div
-						class="avatar online placeholder bg-base-100 rounded-full"
-					>
-						<div class="w-8 rounded-full">
-							<span>{friend[0].toUpperCase()}</span>
-						</div>
-					</div>
-
-					<span class="mr-auto">{friend}</span>
-				</a>
-				<button
-					on:click={() => removeFriend(friend)}
-					class="btn mt-1 ml-1"
-					><svelte:component this={CrossIcon} /></button
+			<div class="my-2">
+				<div
+					class="alert bg-base-200 border-base-100 border-2"
 				>
+					<a href="/app/dm/{friend}"
+						><div
+							class="avatar online placeholder bg-base-100 rounded-full"
+						>
+							<div
+								class="w-8 rounded-full text-primary-focus"
+							>
+								<span>{friend[0].toUpperCase()}</span>
+							</div>
+						</div>
+
+						<span class="mr-auto">{friend}</span>
+					</a>
+				</div>
 			</div>
 		{/each}
 	</div>

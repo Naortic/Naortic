@@ -4,6 +4,7 @@
 	import cookie from 'cookie';
 	import GitHubIcon from '../GitHubIcon.svelte';
 	import { User } from '$lib/User';
+	import ArrowIcon from '../ArrowIcon.svelte';
 
 	export let signedIn = false;
 	export let name = '';
@@ -45,12 +46,14 @@
 		>
 	</div>
 	<div class="navbar-end">
-		<a href="https://github.com/Naortic/Naortic"
+		<a
+			href="https://github.com/Naortic/Naortic"
+			class="btn btn-ghost"
 			><svelte:component this={GitHubIcon} /></a
 		>
-		{#if signedIn}<div class="ml-2 btn btn-disabled">
-				{name}
-			</div>{/if}
+		{#if signedIn}<a href="/app" class="ml-2 btn">
+				App<svelte:component this={ArrowIcon} />
+			</a>{/if}
 		{#if !signedIn}<a href="/login" class="ml-2 btn"
 				>Login</a
 			>{/if}
