@@ -31,7 +31,7 @@
 			).value ?? '';
 		fetch(
 			import.meta.env.VITE_API_URL +
-				`/signup/email?email=${email}&name=${name}&password=${password}`
+				`/signup?email=${email}&name=${name}&password=${password}`
 		).then((res) =>
 			res.text().then((token) => {
 				if (!res.ok) {

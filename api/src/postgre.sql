@@ -1,20 +1,34 @@
--- name: create-table
+-- name: create-table-accounts
 CREATE TABLE accounts (
-  id INTEGER AUTO_INCREMENT PRIMARY KEY,
+  id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   password TEXT NOT NULL,
   token TEXT NOT NULL,
   email TEXT NOT NULL,
-  friends TEXT[]
+  friends TEXT[],
+  snowflake TEXT NOT NULL,
+  avatar TEXT,
+);
+
+-- name: create-table-messages
+CREATE TABLE messages (
+  id INTEGER BIGSERIAL PRIMARY KEY,
+  snowflake TEXT NOT NULL,
+  from TEXT NOT NULL,
+  to TEXT NOT NULL,
+  content TEXT NOT NULL,
 );
 
 -- name: create-account
-INSERT INTO accounts (name, password, token, email, friends) VALUES ($1, $2, $3, $4, '{}');
+INSERT INTO accounts (snowflake, name, password, token, email, friends) VALUES ($1, $2, $3, $4, $5, '{}');
 
 -- name: read-account
-SELECT name, email, friends FROM accounts WHERE token=$1;
+SELECT snowflake, name, email, friends, avatar FROM accounts WHERE token=$1;
 
 -- name: find-account
+SELECT snowflake, name, friends, avatar FROM accounts WHERE snowflake=$1;
+
+-- name: search-account
 SELECT token FROM accounts WHERE email=$1 AND password=$2;
 
 -- name: update-account-name

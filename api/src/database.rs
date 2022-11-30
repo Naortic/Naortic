@@ -2,6 +2,8 @@ use rawsql::Loader;
 use std::env::var;
 use tokio_postgres::{connect, Client, Error, Row};
 
+use crate::util::snowflake;
+
 fn query(name: &str) -> String {
     Loader::read_queries_from("src/postgre.sql")
         .unwrap()
@@ -48,7 +50,7 @@ pub async fn create_account(name: &str, password: &str, email: &str, token: &str
         .await
         .query(
             &query("create-account"),
-            &[&name, &password, &token, &email],
+            &[&snowflake(), &name, &password, &token, &email],
         )
         .await
         .unwrap()
@@ -62,10 +64,17 @@ pub async fn read_account(token: &str) -> Vec<Row> {
         .unwrap()
 }
 
-pub async fn find_account(email: &str, password: &str) -> Result<Vec<Row>, Error> {
+pub async fn find_account(id: &str) -> Result<Vec<Row>, Error> {
     connection()
         .await
-        .query(&query("find-account"), &[&email, &password])
+        .query(&query("find-account"), &[&id])
+        .await
+}
+
+pub async fn search_account(email: &str, password: &str) -> Result<Vec<Row>, Error> {
+    connection()
+        .await
+        .query(&query("search-account"), &[&email, &password])
         .await
 }
 

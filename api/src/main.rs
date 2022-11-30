@@ -1,16 +1,7 @@
+pub mod account;
 pub mod database;
 pub mod routes;
-pub mod account;
-
-use routes::{
-    index::index,
-    login::email::email,
-    user::{
-        friends::{add::friends_add, remove::friends_remove, friends},
-        name::name,
-        index as user_index,
-    },
-};
+pub mod util;
 
 #[macro_use]
 extern crate rocket;
@@ -34,8 +25,18 @@ fn rocket() -> _ {
         .allow_credentials(true);
 
     rocket::build()
-        .mount("/", routes![index])
-        .mount("/login", routes![email])
-        .mount("/user", routes![user_index, friends, friends_add, friends_remove, name])
+        .mount("/", routes![routes::index])
+        .mount("/login", routes![routes::login::index])
+        .mount("/signup", routes![routes::signup::index])
+        .mount("/users", routes![routes::users::index])
+        .mount(
+            "/me",
+            routes![
+                routes::me::index,
+                routes::me::friends::index,
+                routes::me::friends::add,
+                routes::me::friends::remove
+            ],
+        )
         .attach(cors.to_cors().unwrap())
 }

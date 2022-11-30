@@ -20,7 +20,7 @@
 		show++;
 		fetch(
 			import.meta.env.VITE_API_URL +
-				`/login/email?email=${email}&name=${name}&password=${password}`
+				`/login?email=${email}&name=${name}&password=${password}`
 		).then((res) => {
 			if (!res.ok) {
 				return (text =

@@ -21,7 +21,7 @@
 		if (signedIn) {
 			fetch(
 				import.meta.env.VITE_API_URL +
-					`/user?token=${usr.data.token}`
+					`/me?token=${usr.data.token}`
 			).then((res) =>
 				res.json().then((json) => {
 					usr.data = json;
